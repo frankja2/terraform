@@ -19,9 +19,19 @@ pipeline {
         withCredentials([file(credentialsId: env.KUBECONFIG_CRED_ID, variable: 'KUBECONFIG_PATH')]) {
             sh '''
             terraform init
-            terraform apply -auto-approve -var="kubeconfig=$KUBECONFIG_PATH"
+            terraform plan -var="kubeconfig=$KUBECONFIG_PATH"
           '''
         }
+      }
+    }
+    stage('Manual approval') {
+      steps {
+        input message: 'Czy zatwierdzasz apply?', ok: 'Tak, jedziemy!'
+      }
+    }
+    stage('Terraform apply') {
+      steps {
+        sh 'terraform apply -no-color -auto-approve'
       }
     }
   }
