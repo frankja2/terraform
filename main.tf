@@ -30,16 +30,3 @@ resource "kubernetes_secret" "example" {
 
   type = "Opaque"
 }
-
-resource "kubernetes_secret" "test" {
-  metadata {
-    name = "my-test-secret"
-    annotations = {
-      "test/number" = "1"
-    }
-  }
-  data = {
-    foo = base64encode("bar")
-  }
-  type = "Opaque"
-}
