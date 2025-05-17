@@ -15,3 +15,18 @@ variable "kubeconfig" {
   description = "Path to kubeconfig file"
   type        = string
 }
+
+resource "kubernetes_secret" "example" {
+  metadata {
+    name      = "my-secret"
+    namespace = "default"   # lub inny namespace, jeśli chcesz
+  }
+
+  data = {
+    # klucz = wartość base64-encoded!
+    username = base64encode("admin")
+    password = base64encode("superhaslo123")
+  }
+
+  type = "Opaque"
+}
