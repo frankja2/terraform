@@ -31,7 +31,7 @@ pipeline {
     }
     stage('Terraform apply') {
       steps {
-        sh 'terraform apply -no-color -auto-approve -var="kubeconfig=$KUBECONFIG_PATH'
+        sh 'terraform apply -no-color -auto-approve -var="kubeconfig=$KUBECONFIG_PATH"'
       }
     }
   }
