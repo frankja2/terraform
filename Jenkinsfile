@@ -5,7 +5,7 @@ pipeline {
     TF_CLI_ARGS = "-no-color"
   }
   stages {
-    stage('All steps') {
+    stage('Debug shell') {
       steps {
         withCredentials([file(credentialsId: env.KUBECONFIG_CRED_ID, variable: 'KUBECONFIG_PATH')]) {
           sh 'echo $PATH'
@@ -13,14 +13,27 @@ pipeline {
           sh 'ls -l /usr/local/bin/terraform || echo "nie ma /usr/local/bin/terraform"'
           sh 'whoami'
           sh 'env'
-
+        }
+      }
+    }
+    stage('Terraform Init & Plan') {
+      steps {
+        withCredentials([file(credentialsId: env.KUBECONFIG_CRED_ID, variable: 'KUBECONFIG_PATH')]) {
           sh '''
             terraform init
             terraform plan -var="kubeconfig=$KUBECONFIG_PATH"
           '''
-
-          input message: 'Czy zatwierdzasz apply?', ok: 'Tak, jedziemy!'
-
+        }
+      }
+    }
+    stage('Manual approval') {
+      steps {
+        input message: 'Czy zatwierdzasz apply?', ok: 'Tak, jedziemy!'
+      }
+    }
+    stage('Terraform apply') {
+      steps {
+        withCredentials([file(credentialsId: env.KUBECONFIG_CRED_ID, variable: 'KUBECONFIG_PATH')]) {
           sh 'terraform apply -no-color -auto-approve -var="kubeconfig=$KUBECONFIG_PATH"'
         }
       }
