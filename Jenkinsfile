@@ -16,12 +16,10 @@ pipeline {
     stage('Terraform Init & Apply') {
       steps {
         withCredentials([file(credentialsId: env.KUBECONFIG_CRED_ID, variable: 'KUBECONFIG_PATH')]) {
-          dir('terraform-tfstate') {
             sh '''
             terraform init
             terraform apply -auto-approve -var="kubeconfig=$KUBECONFIG_PATH"
           '''
-        }
         }
       }
     }
