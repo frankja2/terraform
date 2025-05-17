@@ -2,6 +2,7 @@ pipeline {
   agent { label 'terraform' }
   environment {
     KUBECONFIG_CRED_ID = 'k3s-kubeconfig'
+    TF_CLI_ARGS = "-no-color"
   }
   stages {
     stage('Debug shell') {
