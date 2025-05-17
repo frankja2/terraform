@@ -8,6 +8,10 @@ terraform {
 }
 
 provider "kubernetes" {
-  # Configuration options
+  config_path = var.kubeconfig
 }
 
+variable "kubeconfig" {
+  description = "Path to kubeconfig file"
+  type        = string
+}
