@@ -34,7 +34,7 @@ resource "kubernetes_secret" "test" {
   metadata {
     name = "my-test-secret"
     annotations = {
-      "test/number" = "1"
+      "test/number" = "2"
     }
   }
   data = {
